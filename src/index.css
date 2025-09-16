@@ -17,9 +17,9 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 174 100% 42%;
+    --primary: 0 84% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 174 100% 35%;
+    --primary-hover: 0 84% 45%;
 
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
@@ -47,13 +47,13 @@ All colors MUST be HSL.
     --info-foreground: 355.7 100% 97.3%;
 
     /* Car wash specific colors */
-    --wash-blue: 217 91% 60%;
-    --wash-teal: 174 100% 42%;
-    --wash-green: 142 76% 36%;
+    --wash-red: 0 84% 55%;
+    --wash-crimson: 348 83% 47%;
+    --wash-accent: 15 86% 53%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-blue)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-blue)) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-crimson)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-crimson)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
 
     /* Shadows */
@@ -90,9 +90,9 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 174 100% 42%;
+    --primary: 0 84% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 174 100% 35%;
+    --primary-hover: 0 84% 45%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -120,8 +120,8 @@ All colors MUST be HSL.
     --info-foreground: 355.7 100% 97.3%;
 
     /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-blue)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-blue)) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-crimson)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-crimson)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
 
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);

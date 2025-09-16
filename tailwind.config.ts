@@ -36,9 +36,9 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
-        "wash-blue": "hsl(var(--wash-blue))",
-        "wash-teal": "hsl(var(--wash-teal))",
-        "wash-green": "hsl(var(--wash-green))",
+        "wash-red": "hsl(var(--wash-red))",
+        "wash-crimson": "hsl(var(--wash-crimson))",
+        "wash-accent": "hsl(var(--wash-accent))",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

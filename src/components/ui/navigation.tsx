@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Car, CreditCard, Shield, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-export const Navigation = () => {
+export const Navigation = ({ onLoginClick, onBookNowClick }: { 
+  onLoginClick?: () => void;
+  onBookNowClick?: () => void;
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -22,16 +25,16 @@ export const Navigation = () => {
             <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">
               Services
             </a>
-            <a href="#booking" className="text-muted-foreground hover:text-primary transition-colors">
+            <button onClick={onBookNowClick} className="text-muted-foreground hover:text-primary transition-colors">
               Book Now
-            </a>
+            </button>
             <a href="#packages" className="text-muted-foreground hover:text-primary transition-colors">
               Packages
             </a>
             <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
               Contact
             </a>
-            <Button variant="default" className="shadow-button">
+            <Button variant="default" className="shadow-button" onClick={onLoginClick}>
               Login
             </Button>
           </div>
@@ -56,9 +59,9 @@ export const Navigation = () => {
               <a href="#services" className="block px-3 py-2 text-muted-foreground hover:text-primary transition-colors">
                 Services
               </a>
-              <a href="#booking" className="block px-3 py-2 text-muted-foreground hover:text-primary transition-colors">
-                Book Now
-              </a>
+               <button onClick={onBookNowClick} className="block px-3 py-2 text-muted-foreground hover:text-primary transition-colors w-full text-left">
+                 Book Now
+               </button>
               <a href="#packages" className="block px-3 py-2 text-muted-foreground hover:text-primary transition-colors">
                 Packages
               </a>
@@ -66,7 +69,7 @@ export const Navigation = () => {
                 Contact
               </a>
               <div className="pt-2">
-                <Button variant="default" className="w-full shadow-button">
+                <Button variant="default" className="w-full shadow-button" onClick={onLoginClick}>
                   Login
                 </Button>
               </div>

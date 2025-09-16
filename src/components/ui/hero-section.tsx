@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Star, ChevronRight } from "lucide-react";
-import heroImage from "@/assets/hero-carwash.jpg";
+import heroImage from "@/assets/red-lamborghini-hero.jpg";
 
-export const HeroSection = () => {
+export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void }) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -56,7 +56,7 @@ export const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="shadow-button group">
+            <Button size="lg" className="shadow-button group" onClick={onBookNowClick}>
               <Calendar className="w-5 h-5 mr-2" />
               Book Now
               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
