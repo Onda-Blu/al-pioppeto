@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, CheckCircle, XCircle } from "lucide-react";
 import { useState } from "react";
+import React from "react";
 
 interface TimeSlot {
   time: string;
@@ -56,7 +57,33 @@ const mockSchedule: DaySchedule[] = [
 ];
 
 export const BookingCalendar = () => {
+
   const [selectedSlot, setSelectedSlot] = useState<{ date: string; time: string } | null>(null);
+  const [countdown, setCountdown] = useState<number | null>(null);
+
+  // Find closest available slot (today)
+  const now = new Date();
+  const todaySchedule = mockSchedule[0];
+  const closestSlot = todaySchedule.slots.find(slot => slot.available && parseInt(slot.time.replace(':', ''), 10) > (now.getHours() * 100 + now.getMinutes()));
+
+  // Calculate countdown in seconds
+  let closestTime = null;
+  if (closestSlot) {
+    const [h, m] = closestSlot.time.split(":").map(Number);
+    const slotDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+    closestTime = Math.floor((slotDate.getTime() - now.getTime()) / 1000);
+  }
+
+  // Timer effect
+  React.useEffect(() => {
+    if (closestTime !== null && closestTime > 0) {
+      setCountdown(closestTime);
+      const interval = setInterval(() => {
+        setCountdown(prev => (prev && prev > 0 ? prev - 1 : 0));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [closestTime]);
 
   const handleSlotSelect = (date: string, time: string, available: boolean) => {
     if (!available) return;
@@ -67,7 +94,19 @@ export const BookingCalendar = () => {
     <section id="booking" className="py-16 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+        {closestSlot && countdown !== null && countdown > 0 && (
+          <div className="mb-6 flex flex-col items-center justify-center">
+            <span className="text-sm text-primary font-semibold mb-1" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Next available slot:</span>
+            <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full shadow-elegant">
+              <Clock className="w-5 h-5 text-primary" />
+              <span className="text-lg font-bold text-primary" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>{closestSlot.time}</span>
+              <span className="text-md text-primary font-semibold" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>
+                {`${Math.floor(countdown / 60)}:${(countdown % 60).toString().padStart(2, '0')}`}
+              </span>
+            </div>
+          </div>
+        )}
+          <h2 className="text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>
             Book Your Car Wash
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -136,7 +175,7 @@ export const BookingCalendar = () => {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="text-primary-foreground">
-                    <h3 className="font-semibold mb-1">Selected Time Slot</h3>
+                    <h3 className="font-semibold mb-1" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Selected Time Slot</h3>
                     <p className="text-primary-foreground/80">
                       {mockSchedule.find(d => d.date === selectedSlot.date)?.day} at {selectedSlot.time}
                     </p>
