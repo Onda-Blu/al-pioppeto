@@ -62,7 +62,7 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
             {/* Package Deal & Timer - Top on Mobile */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               {/* Package Deal */}
-              <div className="bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm rounded-2xl p-5 shadow-elegant border border-primary/20 text-center">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 shadow-elegant border border-primary/20 text-center">
                 <div className="mb-3">
                   <div className="text-xs text-muted-foreground mb-1 line-through opacity-60">€30 per wash</div>
                   <div className="text-3xl font-bold text-primary mb-1">
@@ -225,7 +225,7 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
             <div className="flex flex-col items-center justify-center lg:items-end">
               
               {/* Package Deal - More Visible */}
-              <div className="bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm rounded-2xl p-6 shadow-elegant mb-4 border border-primary/20 text-center max-w-sm w-full">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-elegant mb-4 border border-primary/20 text-center max-w-sm w-full">
                 <div className="mb-3">
                   <div className="text-xs text-muted-foreground mb-1 line-through opacity-60">€30 per wash</div>
                   <div className="text-4xl font-bold text-primary mb-1">
