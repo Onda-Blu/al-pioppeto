@@ -41,31 +41,81 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-        <div className="max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl">
           
-          {/* Left Column - Main Content */}
-          <div className="text-left">
+          {/* Mobile Layout */}
+          <div className="lg:hidden">
             {/* Badge */}
             <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary/20 mb-4 bg-primary/5">
               <Star className="w-4 h-4 text-primary mr-2" />
               <span className="text-sm font-medium text-primary">Premium Car Wash Service</span>
             </div>
 
-            {/* Main Heading - Smaller */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground">
+            {/* Main Heading - Smaller on Mobile */}
+            <h1 className="text-2xl sm:text-3xl font-bold mb-6 leading-tight text-foreground">
               Professional Car Wash
               <span className="block text-primary">
                 With Smart Booking
               </span>
             </h1>
 
-            {/* Subtitle - Smaller */}
-            <p className="text-lg mb-6 max-w-xl leading-relaxed text-muted-foreground">
+            {/* Package Deal & Timer - Top on Mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              {/* Package Deal */}
+              <div className="bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm rounded-2xl p-5 shadow-elegant border border-primary/20 text-center">
+                <div className="mb-3">
+                  <div className="text-xs text-muted-foreground mb-1 line-through opacity-60">€30 per wash</div>
+                  <div className="text-3xl font-bold text-primary mb-1">
+                    €{packageDeal.pricePerWash}
+                  </div>
+                  <div className="text-sm font-medium text-foreground">per wash</div>
+                </div>
+                <div className="border-t border-primary/20 pt-3">
+                  <div className="text-lg font-bold text-success mb-1">
+                    Save €{packageDeal.savings}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    for {packageDeal.washes} car washes
+                  </div>
+                </div>
+              </div>
+
+              {/* Timer */}
+              <div className="bg-gradient-to-br from-primary/90 to-primary backdrop-blur-sm rounded-2xl p-5 shadow-elegant text-center text-white">
+                <div className="mb-2">
+                  <div className="text-xs opacity-90 mb-1">Next Available</div>
+                  <div className="text-xl font-bold mb-1">{nextSlot}</div>
+                </div>
+                <div className="border-t border-white/20 pt-3">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Clock className="w-4 h-4" />
+                    <span className="text-xl font-bold">
+                      {minutes}:{seconds.toString().padStart(2, '0')}
+                    </span>
+                  </div>
+                  <div className="text-xs opacity-90">
+                    Reserve now
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Book Now Button - Prominent */}
+            <div className="mb-6">
+              <Button size="lg" className="w-full shadow-button group" onClick={onBookNowClick}>
+                <Calendar className="w-5 h-5 mr-2" />
+                Book Now
+                <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+
+            {/* Subtitle */}
+            <p className="text-base mb-6 leading-relaxed text-muted-foreground">
               Experience premium car wash services with intelligent license plate recognition, automated time tracking, and seamless online payments.
             </p>
 
             {/* Features with Better Icons */}
-            <div className="grid grid-cols-1 gap-4 mb-8 max-w-lg">
+            <div className="grid grid-cols-1 gap-3 mb-6">
               <div className="flex items-center space-x-3 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-3 border border-white/20">
                 <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
                   <Scan className="w-5 h-5 text-primary" />
@@ -86,74 +136,146 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
               </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="shadow-button group" onClick={onBookNowClick}>
-                <Calendar className="w-5 h-5 mr-2" />
-                Book Now
-                <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button variant="outline" size="lg" className="shadow-button group border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+            {/* View Schedule Button */}
+            <div className="mb-6">
+              <Button variant="outline" size="lg" className="w-full shadow-button group border-primary text-primary hover:bg-primary hover:text-primary-foreground">
                 <Clock className="w-5 h-5 mr-2" />
                 View Schedule
               </Button>
             </div>
-          </div>
-
-          {/* Right Column - Pricing & Timer (More Prominent) */}
-          <div className="flex flex-col items-center justify-center lg:items-end">
-            
-            {/* Package Deal - More Visible */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-elegant mb-6 border border-white/30 text-center max-w-sm w-full">
-              <div className="mb-4">
-                <div className="text-sm text-muted-foreground mb-2">Package Deal</div>
-                <div className="text-5xl font-bold text-primary mb-2">
-                  €{packageDeal.pricePerWash}
-                </div>
-                <div className="text-lg font-medium text-foreground">per wash</div>
-              </div>
-              <div className="border-t border-border pt-4">
-                <div className="text-2xl font-bold text-success mb-1">
-                  Save €{packageDeal.savings}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  for {packageDeal.washes} car washes
-                </div>
-              </div>
-            </div>
-
-            {/* Timer - More Visible */}
-            <div className="bg-primary/95 backdrop-blur-sm rounded-2xl p-6 shadow-elegant text-center text-white max-w-sm w-full">
-              <div className="mb-3">
-                <div className="text-sm opacity-90 mb-2">Next Available Slot</div>
-                <div className="text-2xl font-bold mb-1">{nextSlot}</div>
-              </div>
-              <div className="border-t border-white/20 pt-4">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Clock className="w-6 h-6" />
-                  <span className="text-3xl font-bold">
-                    {minutes}:{seconds.toString().padStart(2, '0')}
-                  </span>
-                </div>
-                <div className="text-sm opacity-90">
-                  Reserve your spot now
-                </div>
-              </div>
-            </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-4 mt-6 w-full max-w-sm">
+            <div className="grid grid-cols-3 gap-3">
               <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
-                <div className="text-xl font-bold text-primary">20</div>
+                <div className="text-lg font-bold text-primary">20</div>
                 <div className="text-xs text-muted-foreground">min wash</div>
               </div>
               <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
-                <div className="text-xl font-bold text-primary">€30</div>
+                <div className="text-lg font-bold text-primary">€30</div>
                 <div className="text-xs text-muted-foreground">starting</div>
               </div>
               <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
-                <div className="text-xl font-bold text-primary">3</div>
+                <div className="text-lg font-bold text-primary">3</div>
                 <div className="text-xs text-muted-foreground">slots/hour</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Left Column - Main Content */}
+            <div className="text-left">
+              {/* Badge */}
+              <div className="inline-flex items-center px-4 py-2 rounded-full border border-primary/20 mb-4 bg-primary/5">
+                <Star className="w-4 h-4 text-primary mr-2" />
+                <span className="text-sm font-medium text-primary">Premium Car Wash Service</span>
+              </div>
+
+              {/* Main Heading - Smaller */}
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground">
+                Professional Car Wash
+                <span className="block text-primary">
+                  With Smart Booking
+                </span>
+              </h1>
+
+              {/* Subtitle - Smaller */}
+              <p className="text-lg mb-6 max-w-xl leading-relaxed text-muted-foreground">
+                Experience premium car wash services with intelligent license plate recognition, automated time tracking, and seamless online payments.
+              </p>
+
+              {/* Features with Better Icons */}
+              <div className="grid grid-cols-1 gap-4 mb-8 max-w-lg">
+                <div className="flex items-center space-x-3 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-3 border border-white/20">
+                  <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                    <Scan className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground">License Plate Recognition</span>
+                </div>
+                <div className="flex items-center space-x-3 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-3 border border-white/20">
+                  <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                    <Timer className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground">Automatic Time Tracking</span>
+                </div>
+                <div className="flex items-center space-x-3 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-3 border border-white/20">
+                  <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                    <CreditCard className="w-5 h-5 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground">Contactless Payment</span>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="shadow-button group" onClick={onBookNowClick}>
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Book Now
+                  <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                <Button variant="outline" size="lg" className="shadow-button group border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                  <Clock className="w-5 h-5 mr-2" />
+                  View Schedule
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Column - Pricing & Timer (More Prominent) */}
+            <div className="flex flex-col items-center justify-center lg:items-end">
+              
+              {/* Package Deal - More Visible */}
+              <div className="bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm rounded-2xl p-6 shadow-elegant mb-4 border border-primary/20 text-center max-w-sm w-full">
+                <div className="mb-3">
+                  <div className="text-xs text-muted-foreground mb-1 line-through opacity-60">€30 per wash</div>
+                  <div className="text-4xl font-bold text-primary mb-1">
+                    €{packageDeal.pricePerWash}
+                  </div>
+                  <div className="text-sm font-medium text-foreground">per wash</div>
+                </div>
+                <div className="border-t border-primary/20 pt-3">
+                  <div className="text-lg font-bold text-success mb-1">
+                    Save €{packageDeal.savings}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    for {packageDeal.washes} car washes
+                  </div>
+                </div>
+              </div>
+
+              {/* Timer - More Visible */}
+              <div className="bg-gradient-to-br from-primary/90 to-primary backdrop-blur-sm rounded-2xl p-5 shadow-elegant text-center text-white max-w-sm w-full mb-4">
+                <div className="mb-2">
+                  <div className="text-xs opacity-90 mb-1">Next Available</div>
+                  <div className="text-xl font-bold mb-1">{nextSlot}</div>
+                </div>
+                <div className="border-t border-white/20 pt-3">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Clock className="w-5 h-5" />
+                    <span className="text-2xl font-bold">
+                      {minutes}:{seconds.toString().padStart(2, '0')}
+                    </span>
+                  </div>
+                  <div className="text-xs opacity-90">
+                    Reserve now
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-3 w-full max-w-sm">
+                <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-lg font-bold text-primary">20</div>
+                  <div className="text-xs text-muted-foreground">min wash</div>
+                </div>
+                <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-lg font-bold text-primary">€30</div>
+                  <div className="text-xs text-muted-foreground">starting</div>
+                </div>
+                <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
+                  <div className="text-lg font-bold text-primary">3</div>
+                  <div className="text-xs text-muted-foreground">slots/hour</div>
+                </div>
               </div>
             </div>
           </div>
