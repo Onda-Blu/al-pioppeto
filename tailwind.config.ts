@@ -12,6 +12,11 @@ export default {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      sans: ["Archivo", "Inter", "sans-serif"],
+      inter: ["Inter", "sans-serif"],
+      archivo: ["Archivo", "sans-serif"],
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

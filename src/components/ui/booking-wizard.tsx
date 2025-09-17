@@ -89,8 +89,8 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8 max-w-4xl h-[90vh] overflow-y-auto">
         <Card className="shadow-elegant">
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -113,7 +113,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
             {currentStep === 1 && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Select Vehicle Type</h3>
+                  <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Select Vehicle Type</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {vehicleTypes.map((vehicle) => (
                       <Card 
@@ -138,7 +138,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Select Wash Package</h3>
+                  <h3 className="text-lg font-semibold mb-4" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Select Wash Package</h3>
                   <div className="grid gap-4">
                     {washPackages.map((pkg) => (
                       <Card 
@@ -175,7 +175,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
             {/* Step 2: Car Details */}
             {currentStep === 2 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold">Car Details</h3>
+                <h3 className="text-lg font-semibold" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Car Details</h3>
                 <div className="grid gap-4">
                   <div>
                     <Label htmlFor="licensePlate">License Plate Number</Label>
@@ -202,7 +202,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
             {/* Step 3: Personal Details */}
             {currentStep === 3 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold">Personal Information</h3>
+                <h3 className="text-lg font-semibold" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Personal Information</h3>
                 <div className="grid gap-4">
                   <div>
                     <Label htmlFor="customerName">Full Name</Label>
@@ -240,7 +240,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
             {/* Step 4: Payment & Confirmation */}
             {currentStep === 4 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold">Payment & Confirmation</h3>
+                <h3 className="text-lg font-semibold" style={{ fontFamily: 'Archivo, Inter, sans-serif' }}>Payment & Confirmation</h3>
                 
                 {/* Booking Summary */}
                 <Card className="bg-muted/50">
