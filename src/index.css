@@ -17,18 +17,18 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 0 84% 55%;
+    --primary: 214 84% 56%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 0 84% 45%;
+    --primary-hover: 214 84% 46%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
+    --secondary: 214 30% 85%;
+    --secondary-foreground: 214 84% 20%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    --muted: 45 90% 92%;
+    --muted-foreground: 214 20% 40%;
 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    --accent: 45 95% 65%;
+    --accent-foreground: 214 84% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -46,15 +46,15 @@ All colors MUST be HSL.
     --info: 217 91% 60%;
     --info-foreground: 355.7 100% 97.3%;
 
-    /* Car wash specific colors */
-    --wash-red: 0 84% 55%;
-    --wash-crimson: 348 83% 47%;
-    --wash-accent: 15 86% 53%;
+    /* Al Pioppeto specific colors */
+    --wash-blue: 214 84% 56%;
+    --wash-light-blue: 214 50% 70%;
+    --wash-accent: 45 95% 65%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-crimson)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-crimson)) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-light-blue)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-light-blue)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--accent) / 0.1));
 
     /* Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.2);
@@ -90,9 +90,9 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 0 84% 55%;
+    --primary: 214 84% 56%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 0 84% 45%;
+    --primary-hover: 214 84% 46%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -120,8 +120,8 @@ All colors MUST be HSL.
     --info-foreground: 355.7 100% 97.3%;
 
     /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-crimson)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-crimson)) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-light-blue)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--wash-light-blue)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--muted)));
 
     --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Star, ChevronRight, Scan, Timer, CreditCard } from "lucide-react";
-import heroImage from "@/assets/red-lamborghini-hero.jpg";
+import heroImage from "@/assets/carwash-hero.jpg";
 import React from "react";
 
 export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void }) => {
@@ -32,11 +32,11 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
       <div className="absolute inset-0 z-0 w-full h-full">
         <img 
           src={heroImage} 
-          alt="Professional car wash service"
+          alt="Professional car wash service with Al Pioppeto"
           className="w-full h-full object-cover"
           style={{ left: 0, position: 'absolute', width: '100vw', height: '100%', objectFit: 'cover' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-transparent" />
       </div>
 
       {/* Content */}
