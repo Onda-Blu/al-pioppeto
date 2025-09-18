@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigation } from "@/components/ui/navigation";
 import { HeroSection } from "@/components/ui/hero-section";
 import { BookingCalendar } from "@/components/ui/booking-calendar";
-import { PackageSelection } from "@/components/ui/package-selection";
+import { UnifiedBooking } from "@/components/ui/unified-booking";
 import { BookingWizard } from "@/components/ui/booking-wizard";
 import { CustomerArea } from "@/components/ui/customer-area";
 
@@ -19,8 +19,7 @@ const Index = () => {
       <HeroSection onBookNowClick={() => setShowBookingWizard(true)} />
 
       <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
-        <BookingCalendar />
-        <PackageSelection />
+        <UnifiedBooking onComplete={(booking) => console.log('Booking:', booking)} />
       </main>
       {showBookingWizard && (
         <BookingWizard onClose={() => setShowBookingWizard(false)} />

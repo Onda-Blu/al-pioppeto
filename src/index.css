@@ -17,18 +17,18 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 214 84% 56%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 214 84% 46%;
+    --primary: 44 86% 78%;
+    --primary-foreground: 215 100% 15%;
+    --primary-hover: 44 86% 68%;
 
-    --secondary: 214 30% 85%;
-    --secondary-foreground: 214 84% 20%;
+    --secondary: 215 90% 20%;
+    --secondary-foreground: 44 86% 78%;
 
-    --muted: 45 90% 92%;
-    --muted-foreground: 214 20% 40%;
+    --muted: 44 45% 95%;
+    --muted-foreground: 215 30% 40%;
 
-    --accent: 45 95% 65%;
-    --accent-foreground: 214 84% 20%;
+    --accent: 215 90% 35%;
+    --accent-foreground: 44 86% 78%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -47,9 +47,9 @@ All colors MUST be HSL.
     --info-foreground: 355.7 100% 97.3%;
 
     /* Al Pioppeto specific colors */
-    --wash-blue: 214 84% 56%;
-    --wash-light-blue: 214 50% 70%;
-    --wash-accent: 45 95% 65%;
+    --wash-blue: 215 90% 20%;
+    --wash-light-blue: 215 70% 35%;
+    --wash-accent: 44 86% 78%;
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--wash-light-blue)));
@@ -90,9 +90,9 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 214 84% 56%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 214 84% 46%;
+    --primary: 44 86% 78%;
+    --primary-foreground: 215 100% 15%;
+    --primary-hover: 44 86% 68%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
