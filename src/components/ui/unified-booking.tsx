@@ -95,13 +95,13 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
                 selectedPackage === pkg.id 
                   ? 'ring-2 ring-primary bg-primary/5' 
                   : 'hover:bg-muted/30'
-              } ${pkg.popular ? 'ring-1 ring-accent' : ''}`}
+              } ${pkg.popular ? 'border-[3px] border-[#ffb700]' : 'border border-transparent'} ${pkg.popular ? '' : ''}`}
               onClick={() => setSelectedPackage(pkg.id)}
             >
               <CardContent className="p-4 relative">
                 {pkg.popular && (
                   <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-accent text-accent-foreground text-xs px-3 py-1 rounded-full font-medium">
+                    <span className="bg-[#ffb700] text-accent text-xs px-3 py-1 rounded-full font-medium border border-[#ffb700]">
                       Most Popular
                     </span>
                   </div>
@@ -114,7 +114,7 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
                         €{pkg.originalPrice}
                       </span>
                     )}
-                    <div className="text-2xl font-bold text-primary">€{pkg.price}</div>
+                    <div className="text-2xl font-bold text-accent">€{pkg.price}</div>
                     <div className="text-sm text-muted-foreground">{pkg.duration} minutes</div>
                   </div>
                   <p className="text-sm text-muted-foreground">{pkg.description}</p>

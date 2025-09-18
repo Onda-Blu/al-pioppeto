@@ -209,7 +209,7 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="shadow-button group" onClick={onBookNowClick}>
+                <Button size="lg" className="shadow-button group" style={{ background: '#ffb700', color: '#222' }} onClick={onBookNowClick}>
                   <Calendar className="w-5 h-5 mr-2" />
                   Book Now
                   <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

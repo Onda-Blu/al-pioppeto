@@ -153,11 +153,11 @@ export const CustomerArea = ({ onClose }: { onClose: () => void }) => {
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="history">History</TabsTrigger>
-                <TabsTrigger value="invoices">Invoices</TabsTrigger>
-                <TabsTrigger value="packages">Packages</TabsTrigger>
-                <TabsTrigger value="payment">Payment</TabsTrigger>
+                <TabsTrigger value="overview" className={activeTab === "overview" ? "border-2 border-[#ffb700] rounded-lg" : ""}>Overview</TabsTrigger>
+                <TabsTrigger value="history" className={activeTab === "history" ? "border-2 border-[#ffb700] rounded-lg" : ""}>History</TabsTrigger>
+                <TabsTrigger value="invoices" className={activeTab === "invoices" ? "border-2 border-[#ffb700] rounded-lg" : ""}>Invoices</TabsTrigger>
+                <TabsTrigger value="packages" className={activeTab === "packages" ? "border-2 border-[#ffb700] rounded-lg" : ""}>Packages</TabsTrigger>
+                <TabsTrigger value="payment" className={activeTab === "payment" ? "border-2 border-[#ffb700] rounded-lg" : ""}>Payment</TabsTrigger>
               </TabsList>
 
               {/* Overview Tab */}
@@ -256,7 +256,7 @@ export const CustomerArea = ({ onClose }: { onClose: () => void }) => {
                                 {new Date(wash.date).toLocaleDateString()} • {wash.duration} minutes
                               </p>
                             </div>
-                            <Badge variant="secondary">{wash.status}</Badge>
+                            <Badge className="bg-[#ffb700] text-accent border border-[#ffb700]">{wash.status}</Badge>
                           </div>
                           <div className="flex justify-between items-center">
                             <div className="text-sm">
@@ -290,7 +290,7 @@ export const CustomerArea = ({ onClose }: { onClose: () => void }) => {
                               </p>
                             </div>
                             <div className="flex items-center gap-3">
-                              <Badge variant={invoice.status === "Paid" ? "secondary" : "destructive"}>
+                              <Badge className="bg-[#ffb700] text-accent border border-[#ffb700]">
                                 {invoice.status}
                               </Badge>
                               <span className="font-semibold">€{invoice.amount}</span>
@@ -329,7 +329,7 @@ export const CustomerArea = ({ onClose }: { onClose: () => void }) => {
                                 Purchased: {new Date(pkg.purchased).toLocaleDateString()}
                               </p>
                             </div>
-                            <Badge variant={pkg.status === "Active" ? "secondary" : "outline"}>
+                            <Badge className="bg-[#ffb700] text-accent border border-[#ffb700]">
                               {pkg.status}
                             </Badge>
                           </div>
@@ -377,7 +377,7 @@ export const CustomerArea = ({ onClose }: { onClose: () => void }) => {
                                 <p className="text-sm text-muted-foreground">Expires {method.expiry}</p>
                               </div>
                               {method.isDefault && (
-                                <Badge variant="secondary">Default</Badge>
+                                <Badge className="bg-[#ffb700] text-accent border border-[#ffb700]">Default</Badge>
                               )}
                             </div>
                             <Button size="sm" variant="outline">

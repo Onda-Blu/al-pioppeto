@@ -156,7 +156,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
                               <h4 className="font-medium">{pkg.name}</h4>
                               <p className="text-sm text-muted-foreground">{pkg.description}</p>
                               <div className="flex items-center gap-4 mt-1">
-                                <span className="text-primary font-semibold">€{pkg.price}</span>
+                                <span className="text-accent font-semibold">€{pkg.price}</span>
                                 <span className="text-sm text-muted-foreground flex items-center gap-1">
                                   <Clock className="w-3 h-3" />
                                   {pkg.duration} min
@@ -277,7 +277,7 @@ export const BookingWizard = ({ onClose }: { onClose: () => void }) => {
                   <Label>Payment Method</Label>
                   <Card className="p-4 bg-muted/30">
                     <div className="flex items-center gap-3">
-                      <CreditCard className="w-5 h-5 text-primary" />
+                      <CreditCard className="w-5 h-5 text-accent" />
                       <span className="text-sm">Secure payment will be processed via Stripe</span>
                     </div>
                   </Card>
