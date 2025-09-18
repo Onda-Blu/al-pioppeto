@@ -5,6 +5,7 @@ import { BookingCalendar } from "@/components/ui/booking-calendar";
 import { UnifiedBooking } from "@/components/ui/unified-booking";
 import { BookingWizard } from "@/components/ui/booking-wizard";
 import { CustomerArea } from "@/components/ui/customer-area";
+import { ServiceDashboard } from "./ServiceDashboard";
 
 const Index = () => {
   const [showBookingWizard, setShowBookingWizard] = useState(false);
@@ -27,6 +28,7 @@ const Index = () => {
       {showCustomerArea && (
         <CustomerArea onClose={() => setShowCustomerArea(false)} />
       )}
+      <ServiceDashboard />
     </div>
   );
 };
