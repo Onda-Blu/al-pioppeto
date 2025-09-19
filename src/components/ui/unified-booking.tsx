@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ChevronRight, Package, Timer } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,30 +48,113 @@ const packages: Package[] = [
   }
 ];
 
-const timeSlots: TimeSlot[] = [
-  { time: '09:00', status: 'available' },
-  { time: '09:40', status: 'available' },
-  { time: '10:20', status: 'almost-full' },
-  { time: '11:00', status: 'available' },
-  { time: '11:40', status: 'busy' },
-  { time: '12:20', status: 'available' }
-];
+const SLOT_DURATION = 20; // minutes
+const CALENDAR_API_URL = 'https://al-pioppeto-calendar-production.up.railway.app/api/calendar'; // Replace with your deployed service URL
+const CALENDAR_ID = '07b3067fce6c958cd2ce7b642da7e5f65ccb43ae4b933e5757e52facc5c958b2@group.calendar.google.com'; // Replace with your calendar ID
+
+function getTimeSlots(date: Date, busyPeriods: {start: string, end: string}[]) {
+  const slots: TimeSlot[] = [];
+  let current = new Date(date);
+  current.setHours(9, 0, 0, 0); // Start at 09:00
+  const end = new Date(date);
+  end.setHours(18, 0, 0, 0); // End at 18:00
+
+  while (current < end) {
+    const slotStart = new Date(current);
+    const slotEnd = new Date(current);
+    slotEnd.setMinutes(slotEnd.getMinutes() + SLOT_DURATION);
+
+    // Check if slot overlaps with any busy period
+    const isBusy = busyPeriods.some(period => {
+      const busyStart = new Date(period.start);
+      const busyEnd = new Date(period.end);
+      return slotStart < busyEnd && slotEnd > busyStart;
+    });
+
+    slots.push({
+      time: slotStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+      status: isBusy ? 'busy' : 'available'
+    });
+
+    current.setMinutes(current.getMinutes() + SLOT_DURATION);
+  }
+  return slots;
+}
 
 export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => void }) => {
   const [selectedPackage, setSelectedPackage] = useState<string>('premium');
   const [selectedTime, setSelectedTime] = useState<string>('');
-  
-  const handleBooking = () => {
-    if (selectedPackage && selectedTime) {
-      const booking = {
-        package: packages.find(p => p.id === selectedPackage),
-        time: selectedTime
-      };
-      onComplete?.(booking);
-    }
-  };
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [errorSlots, setErrorSlots] = useState<string | null>(null);
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [bookingError, setBookingError] = useState<string | null>(null);
+  const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
 
   const selectedPkg = packages.find(p => p.id === selectedPackage);
+
+  useEffect(() => {
+    async function fetchSlots() {
+      setLoadingSlots(true);
+      setErrorSlots(null);
+      try {
+        const today = new Date();
+        const dateStr = today.toISOString().split('T')[0];
+        const res = await fetch(`${CALENDAR_API_URL}/slots?date=${dateStr}`);
+        if (!res.ok) throw new Error('Failed to fetch slots');
+        const data = await res.json();
+        // Parse busy periods from API response
+        const busyPeriods = (data.calendars?.[CALENDAR_ID]?.busy || []).map((b: any) => ({
+          start: b.start,
+          end: b.end
+        }));
+        setTimeSlots(getTimeSlots(today, busyPeriods));
+      } catch (err: any) {
+        setErrorSlots(err.message || 'Error loading slots');
+      } finally {
+        setLoadingSlots(false);
+      }
+    }
+    fetchSlots();
+  }, []);
+
+  const handleBooking = async () => {
+    setBookingError(null);
+    setBookingSuccess(null);
+    setBookingLoading(true);
+    try {
+      if (selectedPackage && selectedTime && selectedPkg) {
+        const today = new Date();
+        const [hour, minute] = selectedTime.split(':');
+        const start = new Date(today);
+        start.setHours(Number(hour), Number(minute), 0, 0);
+        const end = new Date(start);
+        end.setMinutes(end.getMinutes() + selectedPkg.duration);
+
+        const res = await fetch(`${CALENDAR_API_URL}/book`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            start: start.toISOString(),
+            end: end.toISOString(),
+            summary: selectedPkg.name,
+            description: selectedPkg.description
+          })
+        });
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || 'Booking failed');
+        }
+        const result = await res.json();
+        setBookingSuccess('Booking confirmed!');
+        onComplete?.(result);
+      }
+    } catch (err: any) {
+      setBookingError(err.message || 'Error booking slot');
+    } finally {
+      setBookingLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
@@ -136,26 +219,32 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
           <Clock className="w-5 h-5 text-primary" />
           Available Times Today
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-          {timeSlots.map((slot) => (
-            <Button 
-              key={slot.time}
-              variant={selectedTime === slot.time ? "default" : "outline"}
-              size="sm"
-              disabled={slot.status === 'busy'}
-              className={`h-12 flex flex-col ${
-                slot.status === 'almost-full' ? 'border-warning text-warning' : ''
-              } ${selectedTime === slot.time ? 'shadow-button' : ''}`}
-              onClick={() => setSelectedTime(slot.time)}
-            >
-              <span className="font-medium">{slot.time}</span>
-              <span className="text-xs opacity-70">
-                {slot.status === 'busy' ? 'Full' : 
-                 slot.status === 'almost-full' ? '1 left' : 'Open'}
-              </span>
-            </Button>
-          ))}
-        </div>
+        {loadingSlots ? (
+          <div className="text-center text-muted-foreground">Loading available slots...</div>
+        ) : errorSlots ? (
+          <div className="text-center text-destructive">{errorSlots}</div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            {timeSlots.map((slot) => (
+              <Button 
+                key={slot.time}
+                variant={selectedTime === slot.time ? "default" : "outline"}
+                size="sm"
+                disabled={slot.status === 'busy'}
+                className={`h-12 flex flex-col ${
+                  slot.status === 'almost-full' ? 'border-warning text-warning' : ''
+                } ${selectedTime === slot.time ? 'shadow-button' : ''}`}
+                onClick={() => setSelectedTime(slot.time)}
+              >
+                <span className="font-medium">{slot.time}</span>
+                <span className="text-xs opacity-70">
+                  {slot.status === 'busy' ? 'Full' : 
+                   slot.status === 'almost-full' ? '1 left' : 'Open'}
+                </span>
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Summary & Book Button */}
@@ -183,12 +272,19 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
                 size="lg" 
                 className="shadow-button group w-full md:w-auto"
                 onClick={handleBooking}
+                disabled={bookingLoading}
               >
                 <Calendar className="w-5 h-5 mr-2" />
-                Book Now
+                {bookingLoading ? 'Booking...' : 'Book Now'}
                 <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
+            {bookingError && (
+              <div className="text-destructive mt-2">{bookingError}</div>
+            )}
+            {bookingSuccess && (
+              <div className="text-success mt-2">{bookingSuccess}</div>
+            )}
           </CardContent>
         </Card>
       )}
