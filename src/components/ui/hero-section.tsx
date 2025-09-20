@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Star, ChevronRight, Scan, Timer, CreditCard } from "lucide-react";
 import heroImage from "@/assets/carwash-hero.jpg";
 import React from "react";
-
+import { useUser, SignIn, SignUp, UserButton, useClerk } from '@clerk/clerk-react';
 export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void }) => {
+  const [showSignUp, setShowSignUp] = React.useState(false);
+  const clerk = useClerk();
   // Find the closest available slot (mock logic)
   const now = new Date();
   const slots = ["09:00", "09:40", "10:00", "10:40"];
@@ -18,12 +20,17 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
   }, []);
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
+  const { isSignedIn } = useUser();
 
   // Package deal info
   const packageDeal = {
     pricePerWash: 26,
     savings: 40,
     washes: 10,
+  };
+
+  const handleOpenSignIn = () => {
+    clerk.openSignIn();
   };
 
   return (
@@ -60,49 +67,21 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
             </h1>
 
             {/* Package Deal & Timer - Top on Mobile */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {/* Package Deal */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-elegant border border-accent/20 text-center">
-                <div className="mb-3">
-                  <div className="text-xs text-muted-foreground mb-1 line-through opacity-60">€30 per wash</div>
-                  <div className="text-3xl font-bold text-accent mb-1">
-                    €{packageDeal.pricePerWash}
-                  </div>
-                  <div className="text-sm font-medium text-foreground">per wash</div>
-                </div>
-                <div className="border-t border-accent/20 pt-3">
-                  <div className="text-lg font-bold text-success mb-1">
-                    Save €{packageDeal.savings}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    for {packageDeal.washes} car washes
-                  </div>
-                </div>
-              </div>
-
-              {/* Timer */}
-              <div className="bg-gradient-to-br from-accent/90 to-accent backdrop-blur-sm rounded-2xl p-5 shadow-elegant text-center text-white">
-                <div className="mb-2">
-                  <div className="text-xs opacity-90 mb-1">Next Available</div>
-                  <div className="text-xl font-bold mb-1">{nextSlot}</div>
-                </div>
-                <div className="border-t border-white/20 pt-3">
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-xl font-bold">
-                      {minutes}:{seconds.toString().padStart(2, '0')}
-                    </span>
-                  </div>
-                  <div className="text-xs opacity-90">
-                    Reserve now
-                  </div>
-                </div>
-              </div>
+            <div className="mb-6 w-full max-w-sm mx-auto">
+              {isSignedIn ? (
+                <UserButton afterSignOutUrl="/al-pioppeto/" />
+              ) : (
+                <SignIn afterSignInUrl="/al-pioppeto/" />
+              )}
             </div>
 
             {/* Book Now Button - Prominent */}
             <div className="mb-6">
-              <Button size="lg" className="w-full shadow-button group" onClick={onBookNowClick}>
+              <Button
+                size="lg"
+                className="w-full shadow-button group"
+                onClick={!isSignedIn ? handleOpenSignIn : onBookNowClick}
+              >
                 <Calendar className="w-5 h-5 mr-2" />
                 Book Now
                 <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -138,7 +117,12 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
 
             {/* View Schedule Button */}
             <div className="mb-6">
-              <Button variant="outline" size="lg" className="w-full shadow-button group border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full shadow-button group border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                onClick={!isSignedIn ? handleOpenSignIn : undefined}
+              >
                 <Clock className="w-5 h-5 mr-2" />
                 View Schedule
               </Button>
@@ -209,83 +193,39 @@ export const HeroSection = ({ onBookNowClick }: { onBookNowClick?: () => void })
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="shadow-button group" style={{ background: '#ffb700', color: '#222' }} onClick={onBookNowClick}>
+                <Button
+                  size="lg"
+                  className="shadow-button group"
+                  style={{ background: '#ffb700', color: '#222' }}
+                  onClick={!isSignedIn ? handleOpenSignIn : onBookNowClick}
+                >
                   <Calendar className="w-5 h-5 mr-2" />
                   Book Now
                   <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
-                <Button variant="outline" size="lg" className="shadow-button group border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="shadow-button group border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                  onClick={!isSignedIn ? handleOpenSignIn : undefined}
+                >
                   <Clock className="w-5 h-5 mr-2" />
                   View Schedule
                 </Button>
               </div>
             </div>
 
-            {/* Right Column - Pricing & Timer (More Prominent) */}
+            {/* Right Column - Clerk Login Area */}
             <div className="flex flex-col items-center justify-center lg:items-end">
-              
-              {/* Package Deal - More Visible */}
-              <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-elegant mb-4 border border-accent/20 text-center max-w-sm w-full">
-                <div className="mb-3">
-                  <div className="text-xs text-muted-foreground mb-1 line-through opacity-60">€30 per wash</div>
-                  <div className="text-4xl font-bold text-accent mb-1">
-                    €{packageDeal.pricePerWash}
-                  </div>
-                  <div className="text-sm font-medium text-foreground">per wash</div>
-                </div>
-                <div className="border-t border-accent/20 pt-3">
-                  <div className="text-lg font-bold text-success mb-1">
-                    Save €{packageDeal.savings}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    for {packageDeal.washes} car washes
-                  </div>
-                </div>
-              </div>
-
-              {/* Timer - More Visible */}
-              <div className="bg-gradient-to-br from-accent/90 to-accent backdrop-blur-sm rounded-2xl p-5 shadow-elegant text-center text-white max-w-sm w-full mb-4">
-                <div className="mb-2">
-                  <div className="text-xs opacity-90 mb-1">Next Available</div>
-                  <div className="text-xl font-bold mb-1">{nextSlot}</div>
-                </div>
-                <div className="border-t border-white/20 pt-3">
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <Clock className="w-5 h-5" />
-                    <span className="text-2xl font-bold">
-                      {minutes}:{seconds.toString().padStart(2, '0')}
-                    </span>
-                  </div>
-                  <div className="text-xs opacity-90">
-                    Reserve now
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-3 w-full max-w-sm">
-                <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
-                  <div className="text-lg font-bold text-accent">20</div>
-                  <div className="text-xs text-muted-foreground">min wash</div>
-                </div>
-                <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
-                  <div className="text-lg font-bold text-accent">€30</div>
-                  <div className="text-xs text-muted-foreground">starting</div>
-                </div>
-                <div className="text-center bg-white/60 backdrop-blur-sm rounded-lg p-3">
-                  <div className="text-lg font-bold text-accent">3</div>
-                  <div className="text-xs text-muted-foreground">slots/hour</div>
-                </div>
+              <div className="w-full max-w-sm">
+                {isSignedIn ? (
+                  <UserButton afterSignOutUrl="/al-pioppeto/" />
+                ) : (
+                  <SignIn afterSignInUrl="/al-pioppeto/" />
+                )}
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-accent/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-accent rounded-full mt-2"></div>
         </div>
       </div>
     </section>
