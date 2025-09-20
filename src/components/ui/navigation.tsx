@@ -1,12 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { useUser } from '@clerk/clerk-react';
+import { useClerk } from '@clerk/clerk-react';
 import { Calendar, Car, CreditCard, Shield, Menu, X } from "lucide-react";
 import { useState } from "react";
 import logoImg from "@/assets/al-pioppeto-logo.png";
 
-export const Navigation = ({ onLoginClick, onBookNowClick }: { 
-  onLoginClick?: () => void;
-  onBookNowClick?: () => void;
-}) => {
+export const Navigation = ({ onBookNowClick }: { onBookNowClick?: () => void }) => {
+  const { signOut } = useClerk();
+  const handleLogout = async () => {
+    await signOut();
+    window.location.href = '/al-pioppeto/';
+  };
+  const { isSignedIn, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -22,21 +27,21 @@ export const Navigation = ({ onLoginClick, onBookNowClick }: {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#services" className="text-primary-foreground hover:text-accent transition-colors" style={{ fontFamily: 'Inter, Archivo, sans-serif', fontWeight: 500 }}>
-              Services
-            </a>
-            <button onClick={onBookNowClick} className="text-primary-foreground hover:text-accent transition-colors" style={{ fontFamily: 'Inter, Archivo, sans-serif', fontWeight: 500 }}>
-              Book Now
-            </button>
-            <a href="#packages" className="text-primary-foreground hover:text-accent transition-colors" style={{ fontFamily: 'Inter, Archivo, sans-serif', fontWeight: 500 }}>
-              Packages
-            </a>
-            <a href="#contact" className="text-primary-foreground hover:text-accent transition-colors" style={{ fontFamily: 'Inter, Archivo, sans-serif', fontWeight: 500 }}>
-              Contact
-            </a>
-            <Button variant="default" className="shadow-button bg-accent text-accent-foreground hover:bg-accent/90" style={{ fontFamily: 'Inter, Archivo, sans-serif', fontWeight: 600 }} onClick={onLoginClick}>
-              Login
-            </Button>
+            {isSignedIn && user?.primaryEmailAddress?.emailAddress && (
+              <div className="flex items-center gap-2">
+                <span className="text-primary-foreground font-semibold bg-accent/10 px-3 py-1 rounded-full">
+                  {user.primaryEmailAddress.emailAddress}
+                </span>
+                <a
+                  href="#"
+                  className="text-accent text-xs underline hover:text-accent/80 transition"
+                  style={{ color: '#ffb700' }}
+                  onClick={e => { e.preventDefault(); handleLogout(); }}
+                >
+                  Log out
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -69,9 +74,21 @@ export const Navigation = ({ onLoginClick, onBookNowClick }: {
                 Contact
               </a>
               <div className="pt-2">
-                <Button variant="default" className="w-full shadow-button bg-accent text-accent-foreground hover:bg-accent/90" style={{ fontFamily: 'Inter, Archivo, sans-serif', fontWeight: 600 }} onClick={onLoginClick}>
-                  Login
-                </Button>
+                {isSignedIn && user?.primaryEmailAddress?.emailAddress && (
+                  <div className="flex items-center gap-2">
+                    <span className="block px-3 py-2 text-primary-foreground font-semibold bg-accent/10 rounded-full">
+                      {user.primaryEmailAddress.emailAddress}
+                    </span>
+                    <a
+                      href="#"
+                      className="text-accent text-xs underline hover:text-accent/80 transition"
+                      style={{ color: '#ffb700' }}
+                      onClick={e => { e.preventDefault(); handleLogout(); }}
+                    >
+                      Log out
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
