@@ -43,7 +43,7 @@ const Index = () => {
         onBookNowClick={() => setShowBookingWizard(true)}
         onNavigationClick={handleNavigationClick}
         currentView={currentView}
-        showAdminTab={true}
+        showAdminTab={user?.publicMetadata?.role !== 'admin'}
       />
       {!isSignedIn && (
         <HeroSection onBookNowClick={() => setShowBookingWizard(true)} />
