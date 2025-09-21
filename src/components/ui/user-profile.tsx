@@ -10,9 +10,15 @@ import { toast } from "@/hooks/use-toast";
 import { Car, CreditCard, User, Building, Gift, DollarSign } from "lucide-react";
 
 interface UserProfileData {
+  type?: 'individual' | 'company';
   firstName?: string;
   lastName?: string;
   company?: string;
+  companyFullName?: string;
+  companyVAT?: string;
+  companyAddress?: string;
+  companyIBAN?: string;
+  companyContact?: string;
   vehicleDetails?: {
     make?: string;
     model?: string;
@@ -99,45 +105,100 @@ export const UserProfile = () => {
                 Personal Information
               </CardTitle>
               <CardDescription>
-                Update your personal details and company information
+                Update your personal details or company information
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={profileData.firstName || ''}
-                    onChange={(e) => setProfileData({
-                      ...profileData,
-                      firstName: e.target.value
-                    })}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={profileData.lastName || ''}
-                    onChange={(e) => setProfileData({
-                      ...profileData,
-                      lastName: e.target.value
-                    })}
-                  />
-                </div>
+              <div className="flex gap-4 mb-4">
+                <Button
+                  variant={profileData.type === 'individual' || !profileData.type ? 'default' : 'outline'}
+                  onClick={() => setProfileData({ ...profileData, type: 'individual' })}
+                >
+                  Individual
+                </Button>
+                <Button
+                  variant={profileData.type === 'company' ? 'default' : 'outline'}
+                  onClick={() => setProfileData({ ...profileData, type: 'company' })}
+                >
+                  Company
+                </Button>
               </div>
-              <div>
-                <Label htmlFor="company">Company</Label>
-                <Input
-                  id="company"
-                  value={profileData.company || ''}
-                  onChange={(e) => setProfileData({
-                    ...profileData,
-                    company: e.target.value
-                  })}
-                />
-              </div>
+              {(!profileData.type || profileData.type === 'individual') && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input
+                        id="firstName"
+                        value={profileData.firstName || ''}
+                        onChange={(e) => setProfileData({
+                          ...profileData,
+                          firstName: e.target.value
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input
+                        id="lastName"
+                        value={profileData.lastName || ''}
+                        onChange={(e) => setProfileData({
+                          ...profileData,
+                          lastName: e.target.value
+                        })}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+              {profileData.type === 'company' && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="companyFullName">Full Company Name</Label>
+                      <Input
+                        id="companyFullName"
+                        value={profileData.companyFullName || ''}
+                        onChange={e => setProfileData({ ...profileData, companyFullName: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="companyVAT">VAT Number</Label>
+                      <Input
+                        id="companyVAT"
+                        value={profileData.companyVAT || ''}
+                        onChange={e => setProfileData({ ...profileData, companyVAT: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="companyAddress">Company Address</Label>
+                      <Input
+                        id="companyAddress"
+                        value={profileData.companyAddress || ''}
+                        onChange={e => setProfileData({ ...profileData, companyAddress: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="companyIBAN">Company IBAN</Label>
+                      <Input
+                        id="companyIBAN"
+                        value={profileData.companyIBAN || ''}
+                        onChange={e => setProfileData({ ...profileData, companyIBAN: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="companyContact">Contact Person</Label>
+                    <Input
+                      id="companyContact"
+                      value={profileData.companyContact || ''}
+                      onChange={e => setProfileData({ ...profileData, companyContact: e.target.value })}
+                    />
+                  </div>
+                </>
+              )}
               <Button onClick={handleSaveProfile} disabled={loading}>
                 {loading ? "Saving..." : "Save Changes"}
               </Button>
