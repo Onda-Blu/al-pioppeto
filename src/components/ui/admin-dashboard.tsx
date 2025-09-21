@@ -66,6 +66,7 @@ export const AdminDashboard = () => {
     utilities: 300,
     maintenance: 200
   });
+  const [bookings, setBookings] = useState(mockBookings);
 
   const totalCosts = Object.values(costs).reduce((sum, cost) => sum + cost, 0);
   const mockRevenue = 5500; // This would come from your booking data
@@ -111,10 +112,11 @@ export const AdminDashboard = () => {
                       <TableHead>Photo Before</TableHead>
                       <TableHead>Photo After</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockBookings.map((booking) => (
+                    {bookings.map((booking, idx) => (
                       <TableRow key={booking.id}>
                         <TableCell>{booking.carType}</TableCell>
                         <TableCell>{booking.bookingType}</TableCell>
@@ -124,7 +126,18 @@ export const AdminDashboard = () => {
                         </TableCell>
                         <TableCell>{booking.carWash}</TableCell>
                         <TableCell>{booking.bookingTime}</TableCell>
-                        <TableCell className="font-medium">€{booking.cashIncome.toFixed(2)}</TableCell>
+                        <TableCell className="font-medium">
+                          <Input
+                            type="number"
+                            value={booking.cashIncome}
+                            min={0}
+                            className="w-24"
+                            onChange={e => {
+                              const value = parseFloat(e.target.value) || 0;
+                              setBookings(prev => prev.map((b, i) => i === idx ? { ...b, cashIncome: value } : b));
+                            }}
+                          />
+                        </TableCell>
                         <TableCell>
                           <Button variant="outline" size="sm">
                             <Camera className="w-4 h-4" />
@@ -141,6 +154,16 @@ export const AdminDashboard = () => {
                           >
                             {booking.status}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {booking.status === 'in-progress' && (
+                            <Button
+                              size="sm"
+                              onClick={() => setBookings(prev => prev.map((b, i) => i === idx ? { ...b, status: 'completed' } : b))}
+                            >
+                              Confirm
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}

@@ -15,22 +15,14 @@ const Index = () => {
   const { isSignedIn, user } = useUser();
   const [showBookingWizard, setShowBookingWizard] = useState(false);
   const [showCustomerArea, setShowCustomerArea] = useState(false);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'profile' | 'packages' | 'admin'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'profile' | 'packages' | 'admin' | 'booking'>('booking');
   const [showDashboard, setShowDashboard] = useState(false);
 
-  const handleNavigationClick = (view: 'dashboard' | 'profile' | 'packages' | 'admin') => {
+  const handleNavigationClick = (view: 'dashboard' | 'profile' | 'packages' | 'admin' | 'booking') => {
     setCurrentView(view);
   };
 
   const renderUserContent = () => {
-    if (!showDashboard) {
-      return (
-        <main style={{ maxWidth: '1200px', margin: '3rem auto', padding: '2rem 1rem' }}>
-          <UnifiedBooking onComplete={() => setShowDashboard(true)} />
-        </main>
-      );
-    }
-
     switch (currentView) {
       case 'profile':
         return <UserProfile />;
@@ -38,17 +30,20 @@ const Index = () => {
         return <PackagesDiscounts />;
       case 'admin':
         return user?.publicMetadata?.role === 'admin' ? <AdminDashboard /> : <ServiceDashboard />;
+      case 'booking':
+        return <UnifiedBooking />;
       default:
         return <ServiceDashboard />;
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Inter, Archivo, sans-serif', color: '#18181B' }}>
+  <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Inter, Archivo, sans-serif', color: '#18181B', marginTop: '3rem' }}>
       <Navigation
         onBookNowClick={() => setShowBookingWizard(true)}
         onNavigationClick={handleNavigationClick}
         currentView={currentView}
+        showAdminTab={true}
       />
       {!isSignedIn && (
         <HeroSection onBookNowClick={() => setShowBookingWizard(true)} />
