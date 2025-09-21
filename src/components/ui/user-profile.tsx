@@ -90,12 +90,80 @@ export const UserProfile = () => {
   return (
     <div className="container mx-auto p-6 max-w-4xl">
       <Tabs defaultValue="personal" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="personal">Personal Info</TabsTrigger>
           <TabsTrigger value="vehicle">Vehicle Details</TabsTrigger>
           <TabsTrigger value="payment">Payment Info</TabsTrigger>
+          <TabsTrigger value="invoices">Invoices</TabsTrigger>
           <TabsTrigger value="bonuses">Bonuses & Donations</TabsTrigger>
         </TabsList>
+        {/* Invoices Tab */}
+        <TabsContent value="invoices" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Car className="w-5 h-5" />
+                Invoices
+              </CardTitle>
+              <CardDescription>
+                View and download your car wash invoices
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* Example data, replace with real data source if available */}
+              <div className="overflow-x-auto">
+                {(() => {
+                  const invoiceData = [
+                    {
+                      date: '2024-05-01',
+                      service: 'Premium Wash',
+                      payment: 'Package',
+                      car: 'BMW 3 Series (ABC123)',
+                      invoice: '#INV-001',
+                      invoiceUrl: '#'
+                    },
+                    {
+                      date: '2024-04-15',
+                      service: 'Express Wash',
+                      payment: 'Direct',
+                      car: 'Audi A4 (XYZ789)',
+                      invoice: '#INV-002',
+                      invoiceUrl: '#'
+                    }
+                  ];
+                  return (
+                    <table className="min-w-full text-sm text-left">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="px-2 py-2">Date</th>
+                          <th className="px-2 py-2">Service</th>
+                          <th className="px-2 py-2">Payment Type</th>
+                          <th className="px-2 py-2">Car</th>
+                          <th className="px-2 py-2">Invoice</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {invoiceData.map((wash, idx) => (
+                          <tr key={idx} className="border-b hover:bg-muted/50">
+                            <td className="px-2 py-2 whitespace-nowrap">{wash.date}</td>
+                            <td className="px-2 py-2 whitespace-nowrap">{wash.service}</td>
+                            <td className="px-2 py-2 whitespace-nowrap">{wash.payment}</td>
+                            <td className="px-2 py-2 whitespace-nowrap">{wash.car}</td>
+                            <td className="px-2 py-2 whitespace-nowrap">
+                              <a href={wash.invoiceUrl} className="text-primary underline" target="_blank" rel="noopener noreferrer">
+                                {wash.invoice}
+                              </a>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  );
+                })()}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="personal" className="space-y-4">
           <Card>
