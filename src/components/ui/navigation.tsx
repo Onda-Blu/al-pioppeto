@@ -8,11 +8,13 @@ import logoImg from "@/assets/al-pioppeto-logo.png";
 export const Navigation = ({ 
   onBookNowClick, 
   onNavigationClick, 
-  currentView 
+  currentView, 
+  showAdminTab 
 }: { 
   onBookNowClick?: () => void;
-  onNavigationClick?: (view: 'dashboard' | 'profile' | 'packages' | 'admin') => void;
+  onNavigationClick?: (view: 'dashboard' | 'profile' | 'packages' | 'admin' | 'booking') => void;
   currentView?: string;
+  showAdminTab?: boolean;
 }) => {
   const { signOut } = useClerk();
   const handleLogout = async () => {
@@ -52,7 +54,14 @@ export const Navigation = ({
                   >
                     Packages & Discounts
                   </Button>
-                  {user?.publicMetadata?.role === 'admin' && (
+                  <Button 
+                    variant="ghost" 
+                    className={`text-primary-foreground hover:text-accent ${currentView === 'booking' ? 'bg-accent/20' : ''}`}
+                    onClick={() => onNavigationClick?.('booking')}
+                  >
+                    Booking
+                  </Button>
+                  {showAdminTab && (
                     <Button 
                       variant="ghost" 
                       className={`text-primary-foreground hover:text-accent ${currentView === 'admin' ? 'bg-accent/20' : ''}`}

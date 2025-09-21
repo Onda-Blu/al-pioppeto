@@ -22,6 +22,8 @@ interface UserProfileData {
   paymentDetails?: {
     cardLast4?: string;
     cardType?: string;
+    iban?: string;
+    method?: 'card' | 'iban';
   };
   bonusWashes?: number;
 }
@@ -40,16 +42,23 @@ export const UserProfile = () => {
 
   const handleSaveProfile = async () => {
     if (!user) return;
-    
     setLoading(true);
     try {
-      // Note: publicMetadata updates require backend API access
-      // For now, we'll store locally and show success message
-      localStorage.setItem('userProfile', JSON.stringify(profileData));
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been saved locally. Backend integration needed for persistence.",
-      });
+      // Update Clerk publicMetadata
+      if (typeof user.update === 'function') {
+        await user.update({ publicMetadata: { ...profileData } });
+        toast({
+          title: "Profile Updated",
+          description: "Your profile has been saved to Clerk.",
+        });
+      } else {
+        // Fallback: localStorage only
+        localStorage.setItem('userProfile', JSON.stringify(profileData));
+        toast({
+          title: "Profile Updated (Local Only)",
+          description: "Your profile has been saved locally. Clerk update not available.",
+        });
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -227,16 +236,88 @@ export const UserProfile = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {profileData.paymentDetails?.cardLast4 ? (
-                <div className="flex items-center gap-4">
-                  <Badge variant="secondary">
-                    {profileData.paymentDetails.cardType} ending in {profileData.paymentDetails.cardLast4}
-                  </Badge>
-                  <Button variant="outline" size="sm">Update Card</Button>
+              <div className="flex gap-4">
+                <Label>
+                  <input
+                    type="radio"
+                    name="payment-method"
+                    checked={profileData.paymentDetails?.method === 'card'}
+                    onChange={() => setProfileData({
+                      ...profileData,
+                      paymentDetails: {
+                        ...profileData.paymentDetails,
+                        method: 'card'
+                      }
+                    })}
+                  /> Card
+                </Label>
+                <Label>
+                  <input
+                    type="radio"
+                    name="payment-method"
+                    checked={profileData.paymentDetails?.method === 'iban'}
+                    onChange={() => setProfileData({
+                      ...profileData,
+                      paymentDetails: {
+                        ...profileData.paymentDetails,
+                        method: 'iban'
+                      }
+                    })}
+                  /> IBAN
+                </Label>
+              </div>
+              {profileData.paymentDetails?.method === 'card' && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="cardType">Card Type</Label>
+                    <Input
+                      id="cardType"
+                      value={profileData.paymentDetails?.cardType || ''}
+                      onChange={e => setProfileData({
+                        ...profileData,
+                        paymentDetails: {
+                          ...profileData.paymentDetails,
+                          cardType: e.target.value
+                        }
+                      })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="cardLast4">Card Last 4 Digits</Label>
+                    <Input
+                      id="cardLast4"
+                      value={profileData.paymentDetails?.cardLast4 || ''}
+                      maxLength={4}
+                      onChange={e => setProfileData({
+                        ...profileData,
+                        paymentDetails: {
+                          ...profileData.paymentDetails,
+                          cardLast4: e.target.value.replace(/[^0-9]/g, '')
+                        }
+                      })}
+                    />
+                  </div>
                 </div>
-              ) : (
-                <Button variant="outline">Add Payment Method</Button>
               )}
+              {profileData.paymentDetails?.method === 'iban' && (
+                <div>
+                  <Label htmlFor="iban">IBAN</Label>
+                  <Input
+                    id="iban"
+                    value={profileData.paymentDetails?.iban || ''}
+                    onChange={e => setProfileData({
+                      ...profileData,
+                      paymentDetails: {
+                        ...profileData.paymentDetails,
+                        iban: e.target.value
+                      }
+                    })}
+                  />
+                </div>
+              )}
+              <Button onClick={handleSaveProfile} disabled={loading} className="mt-4">
+                {loading ? "Saving..." : "Save Payment Info"}
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>

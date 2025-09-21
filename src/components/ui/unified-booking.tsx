@@ -100,6 +100,10 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
   const [personalEmail, setPersonalEmail] = useState('');
   const [personalPhone, setPersonalPhone] = useState('');
   const [selectedPackage, setSelectedPackage] = useState<string>('premium');
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  });
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
@@ -115,8 +119,8 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
       setLoadingSlots(true);
       setErrorSlots(null);
       try {
-        const today = new Date();
-        const dateStr = today.toISOString().split('T')[0];
+        const dateStr = selectedDate;
+        const dateObj = new Date(dateStr);
         const res = await fetch(`${CALENDAR_API_URL}/slots?date=${dateStr}`);
         if (!res.ok) throw new Error('Failed to fetch slots');
         const data = await res.json();
@@ -125,7 +129,7 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
           start: b.start,
           end: b.end
         }));
-        setTimeSlots(getTimeSlots(today, busyPeriods));
+        setTimeSlots(getTimeSlots(dateObj, busyPeriods));
       } catch (err: any) {
         setErrorSlots(err.message || 'Error loading slots');
       } finally {
@@ -133,7 +137,7 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
       }
     }
     fetchSlots();
-  }, []);
+  }, [selectedDate]);
 
   const handleBooking = async () => {
     setBookingError(null);
@@ -238,11 +242,25 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
               ))}
             </div>
           </div>
-          {/* Time Selection */}
+          {/* Date & Time Selection */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-primary" />
+              Select Date
+            </h3>
+            <input
+              type="date"
+              className="border rounded px-3 py-2 mb-2"
+              value={selectedDate}
+              min={new Date().toISOString().split('T')[0]}
+              onChange={e => {
+                setSelectedDate(e.target.value);
+                setSelectedTime('');
+              }}
+            />
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Clock className="w-5 h-5 text-primary" />
-              Available Times Today
+              Available Times
             </h3>
             {loadingSlots ? (
               <div className="text-center text-muted-foreground">Loading available slots...</div>
@@ -271,7 +289,7 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
               </div>
             )}
           </div>
-          {/* Summary & Book Now Button (original) */}
+          {/* Summary & Book Now Button (with date) */}
           {selectedPackage && selectedTime && (
             <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20 mt-6">
               <CardContent className="p-6">
@@ -285,7 +303,7 @@ export const UnifiedBooking = ({ onComplete }: { onComplete?: (booking: any) => 
                       </div>
                       <div className="flex items-center gap-2">
                         <Timer className="w-4 h-4 text-primary" />
-                        <span>Today at {selectedTime}</span>
+                        <span>{selectedDate} at {selectedTime}</span>
                       </div>
                       <div className="text-lg font-bold text-primary">
                         Total: €{selectedPkg?.price}
