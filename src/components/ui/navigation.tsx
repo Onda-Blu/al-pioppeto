@@ -5,7 +5,15 @@ import { Calendar, Car, CreditCard, Shield, Menu, X } from "lucide-react";
 import { useState } from "react";
 import logoImg from "@/assets/al-pioppeto-logo.png";
 
-export const Navigation = ({ onBookNowClick }: { onBookNowClick?: () => void }) => {
+export const Navigation = ({ 
+  onBookNowClick, 
+  onNavigationClick, 
+  currentView 
+}: { 
+  onBookNowClick?: () => void;
+  onNavigationClick?: (view: 'dashboard' | 'profile' | 'packages' | 'admin') => void;
+  currentView?: string;
+}) => {
   const { signOut } = useClerk();
   const handleLogout = async () => {
     await signOut();
@@ -28,18 +36,52 @@ export const Navigation = ({ onBookNowClick }: { onBookNowClick?: () => void }) 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {isSignedIn && user?.primaryEmailAddress?.emailAddress && (
-              <div className="flex items-center gap-2">
-                <span className="text-primary-foreground font-semibold bg-accent/10 px-3 py-1 rounded-full">
-                  {user.primaryEmailAddress.emailAddress}
-                </span>
-                <a
-                  href="#"
-                  className="text-accent text-xs underline hover:text-accent/80 transition"
-                  style={{ color: '#ffb700' }}
-                  onClick={e => { e.preventDefault(); handleLogout(); }}
-                >
-                  Log out
-                </a>
+              <div className="flex items-center gap-6">
+                <nav className="flex items-center gap-4">
+                  <Button 
+                    variant="ghost" 
+                    className={`text-primary-foreground hover:text-accent ${currentView === 'profile' ? 'bg-accent/20' : ''}`}
+                    onClick={() => onNavigationClick?.('profile')}
+                  >
+                    My Profile
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className={`text-primary-foreground hover:text-accent ${currentView === 'packages' ? 'bg-accent/20' : ''}`}
+                    onClick={() => onNavigationClick?.('packages')}
+                  >
+                    Packages & Discounts
+                  </Button>
+                  {user?.publicMetadata?.role === 'admin' && (
+                    <Button 
+                      variant="ghost" 
+                      className={`text-primary-foreground hover:text-accent ${currentView === 'admin' ? 'bg-accent/20' : ''}`}
+                      onClick={() => onNavigationClick?.('admin')}
+                    >
+                      Admin Area
+                    </Button>
+                  )}
+                  <Button 
+                    variant="ghost" 
+                    className={`text-primary-foreground hover:text-accent ${currentView === 'dashboard' ? 'bg-accent/20' : ''}`}
+                    onClick={() => onNavigationClick?.('dashboard')}
+                  >
+                    Dashboard
+                  </Button>
+                </nav>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary-foreground font-semibold bg-accent/10 px-3 py-1 rounded-full">
+                    {user.primaryEmailAddress.emailAddress}
+                  </span>
+                  <a
+                    href="#"
+                    className="text-accent text-xs underline hover:text-accent/80 transition"
+                    style={{ color: '#ffb700' }}
+                    onClick={e => { e.preventDefault(); handleLogout(); }}
+                  >
+                    Log out
+                  </a>
+                </div>
               </div>
             )}
           </div>
