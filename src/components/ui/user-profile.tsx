@@ -94,19 +94,19 @@ export const UserProfile = () => {
           <TabsTrigger value="personal">Personal Info</TabsTrigger>
           <TabsTrigger value="vehicle">Vehicle Details</TabsTrigger>
           <TabsTrigger value="payment">Payment Info</TabsTrigger>
-          <TabsTrigger value="invoices">Invoices</TabsTrigger>
+          <TabsTrigger value="payment-history">Payment history</TabsTrigger>
           <TabsTrigger value="bonuses">Bonuses & Donations</TabsTrigger>
         </TabsList>
-        {/* Invoices Tab */}
-        <TabsContent value="invoices" className="space-y-4">
+        {/* Payment history Tab */}
+        <TabsContent value="payment-history" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Car className="w-5 h-5" />
-                Invoices
+                Payment history
               </CardTitle>
               <CardDescription>
-                View and download your car wash invoices
+                View and download your car wash payment history
               </CardDescription>
             </CardHeader>
             <CardContent>
